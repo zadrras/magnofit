@@ -1,0 +1,9 @@
+/hmf
+data_generator/results
+data_generator/outputs
+outputs
+__pycache__
+.idea
+data_generator.egg-info
+training/observed_outflows_predictions.hdf5
+training/observed_outflows_predictions_massive.hdf5
