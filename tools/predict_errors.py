@@ -82,7 +82,7 @@ groundtruth_table["radius"] = outflow_properties[test_mask][sample_mask]["radius
 
 utils.output_params.remove("bulge_mass")
 
-plt.rcParams.update({"font.size": 13})
+plt.rcParams.update({"font.size": 14})
 for idx, column_name in enumerate(utils.output_params):
     plt.subplot(2, int(np.ceil(len(utils.output_params) / 2)), idx + 1)
 
@@ -92,13 +92,13 @@ for idx, column_name in enumerate(utils.output_params):
         ticks = [0.2, 0.4, 0.6, 0.8, 1.0]
         max_y = 0.25
     elif column_name == "quasar_activity_duration":
-        plt.xlabel(f"True quasar activity duration [kyr]")
-        plt.ylabel(f"Quasar activity duration uncertainty [kyr]")
+        plt.xlabel(f"True activity duration [kyr]")
+        plt.ylabel(f"Activity duration uncertainty [kyr]")
         ticks = [100000, 200000, 300000]
         max_y = 50000
     elif column_name == "outflow_solid_angle_fraction":  # 3
-        plt.xlabel(f"True outflow solid angle fraction")
-        plt.ylabel(f"Outflow solid angle fraction uncertainty")
+        plt.xlabel(f"True solid angle fraction")
+        plt.ylabel(f"Solid angle fraction uncertainty")
         ticks = [0.2, 0.4, 0.6, 0.8, 1.0]
         max_y = 0.25
     elif column_name == "bulge_gas_fraction":

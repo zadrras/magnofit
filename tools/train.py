@@ -21,7 +21,7 @@ parser.add_argument("--activation", type=str, default="elu")
 parser.add_argument("--no-dropout", action="store_false")
 args = parser.parse_args()
 
-outflow_properties = utils.load_simulated_outflows()
+outflow_properties = utils.load_simulated_outflows(path="./outputs/outflows_lumpress3.hdf5")
 
 X = utils.to_numpy(outflow_properties[utils.input_params])
 y = utils.to_numpy(outflow_properties[utils.output_params])
@@ -31,7 +31,7 @@ train_mask, test_mask = utils.split_sets_masks(outflow_properties)
 X_train, y_train = X[train_mask], y[train_mask]
 X_test, y_test = X[test_mask], y[test_mask]
 
-X_mean, X_stddev, y_mean, y_stddev = utils.fit_normalization(X_train, y_train)
+X_mean, X_stddev, y_mean, y_stddev = utils.fit_normalization(X_train, y_train, path="./outputs/normalization_parameters_lumpress3.npz")
 
 X_train = utils.normalize(X_train, X_mean, X_stddev)
 y_train = utils.normalize(y_train, y_mean, y_stddev)
@@ -97,4 +97,4 @@ for m, name in zip(individual_mses, utils.output_params):
 
 print()
 print()
-model.save("./outputs/model.h5")
+model.save("./outputs/model_lumpress3.h5")

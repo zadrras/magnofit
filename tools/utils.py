@@ -76,7 +76,7 @@ input_params = [
 ]
 
 
-def fit_normalization(X, y):
+def fit_normalization(X, y, path="./outputs/normalization_parameters.npz"):
     X_mean = np.mean(np.log10(X), axis=0)
     X_stddev = np.std(np.log10(X), axis=0)
 
@@ -84,7 +84,7 @@ def fit_normalization(X, y):
     y_stddev = np.std(np.log10(y), axis=0)
 
     np.savez(
-        "outputs/normalization_parameters.npz",
+        path,
         X_mean=X_mean,
         X_stddev=X_stddev,
         y_mean=y_mean,
@@ -94,8 +94,8 @@ def fit_normalization(X, y):
     return X_mean, X_stddev, y_mean, y_stddev
 
 
-def load_normalization():
-    data = np.load("outputs/normalization_parameters.npz")
+def load_normalization(path="./outputs/normalization_parameters.npz"):
+    data = np.load(path)
     return data["X_mean"], data["X_stddev"], data["y_mean"], data["y_stddev"]
 
 

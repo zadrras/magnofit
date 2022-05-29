@@ -8,7 +8,10 @@ import matplotlib.pyplot as plt
 import tools.utils as utils
 
 
-outflow_properties = utils.load_simulated_outflows()
+outflow_properties = utils.load_simulated_outflows(path=f"./outputs/outflows.hdf5")
+
+X_test = utils.to_numpy(outflow_properties[utils.input_params])
+y_test = utils.to_numpy(outflow_properties[utils.output_params])
 
 X = utils.to_numpy(outflow_properties[utils.input_params])
 y = utils.to_numpy(outflow_properties[utils.output_params])
@@ -17,7 +20,8 @@ train_mask, test_mask = utils.split_sets_masks(outflow_properties)
 
 X_test, y_test = X[test_mask], y[test_mask]
 
-X_mean, X_stddev, y_mean, y_stddev = utils.load_normalization()
+
+X_mean, X_stddev, y_mean, y_stddev = utils.load_normalization(path="./outputs/normalization_parameters.npz")
 
 X_test = utils.normalize(X_test, X_mean, X_stddev)
 y_test = utils.normalize(y_test, y_mean, y_stddev)
@@ -31,13 +35,15 @@ prediction_table = utils.from_numpy(
     y_test_predictions_denorm, column_names=utils.output_params
 )
 
-groundtruth_table = outflow_properties[test_mask]
+#groundtruth_table = outflow_properties
+#prediction_table["id"] = outflow_properties["id"]
 
+groundtruth_table = outflow_properties[test_mask]
 prediction_table["id"] = outflow_properties[test_mask]["id"]
 
 utils.output_params.remove("bulge_mass")
 
-plt.rcParams.update({'font.size': 13})
+plt.rcParams.update({'font.size': 14})
 for idx, column_name in enumerate(utils.output_params):
     plt.subplot(2, int(np.ceil(len(utils.output_params) / 2)), idx + 1)
     bins = 12
@@ -46,13 +52,13 @@ for idx, column_name in enumerate(utils.output_params):
         plt.ylabel(f"Predicted duty cycle")
         ticks = [0.2, 0.4, 0.6, 0.8, 1.0]
     elif column_name == "quasar_activity_duration":
-        plt.xlabel(f"True quasar activity duration [kyr]")
-        plt.ylabel(f"Predicted quasar activity duration [kyr]")
+        plt.xlabel(f"True activity duration [kyr]")
+        plt.ylabel(f"Predicted activity duration [kyr]")
         bins = np.linspace(10000, 320000, 12)
         ticks = [100000, 200000, 300000]
     elif column_name == "outflow_solid_angle_fraction":  # 3
-        plt.xlabel(f"True outflow solid angle fraction")
-        plt.ylabel(f"Predicted outflow solid angle fraction")
+        plt.xlabel(f"True solid angle fraction")
+        plt.ylabel(f"Predicted solid angle fraction")
         ticks = [0.2, 0.4, 0.6, 0.8, 1.0]
     elif column_name == "bulge_gas_fraction":
         plt.xlabel(f"True bulge gas fraction")
@@ -111,4 +117,4 @@ fig = plt.gcf()
 fig.set_size_inches(9.0, 8.0)
 plt.subplots_adjust(wspace=0.4, hspace=0.25)
 
-plt.savefig(f"./figures/diagonal_error_heatmap.png", dpi=300)
+plt.savefig("./figures/diagonal_error_heatmap.png", dpi=300)

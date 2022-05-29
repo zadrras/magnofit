@@ -18,6 +18,7 @@ from magnofit.galaxy import Galaxy
 import magnofit.constants as const
 from magnofit.simulation import run_outflow_simulation
 import magnofit.calc.luminosity
+import magnofit.calc.mass
 
 
 def generate_initial_parameter_collection_randomised(number=1):
@@ -32,6 +33,7 @@ def generate_initial_parameter_collection_randomised(number=1):
             quasar_activity_duration=rng.uniform(10 ** 4.0, 10 ** 5.5)
             / const.UNIT_YEAR,
             fade=magnofit.calc.luminosity.LuminosityFadeKing(),
+            #bulge_profile=magnofit.calc.mass.MassAlpha(rng.uniform(1.9, 2.2)),
         )
         galaxy_params.generate_stochastic_parameters(rng)
         galaxy_param_collection.append(galaxy_params)
@@ -84,16 +86,30 @@ if __name__ == "__main__":
     print(f"Joining and stacking tables...")
     start_time = time.time()
     outflow_dataframe = []
+    negatives = 0
+    small_rads = 0
+    others = 0
+    alls = 0
+    big_but_negatives = 0
     for galaxy_params, outflow_properties in zip(
         galaxy_param_collection, outflow_properties_collection
     ):
-        if outflow_properties is not None:
+        if outflow_properties == 1:
+            negatives += 1
+        elif outflow_properties == 2:
+            small_rads += 1
+        elif outflow_properties == 3:
+            big_but_negatives += 1
+        else:
+            others += 1
+        alls += 1
+        if outflow_properties not in [1, 2, 3]:
             galaxy_params = galaxy_params.to_table().to_pandas()
             outflow_properties = outflow_properties.to_pandas()
 
             outflow = outflow_properties.merge(galaxy_params, how="cross")
             outflow_dataframe.append(outflow)
-
+    print("Negatives", negatives/alls, "Small rads", small_rads/alls, "big but negative", big_but_negatives/alls)
     for idx, outflow_properties in enumerate(outflow_dataframe):
         outflow_properties["id"] = idx
     outflow_dataframe = pd.concat(outflow_dataframe, ignore_index=True, sort=False)
@@ -105,7 +121,7 @@ if __name__ == "__main__":
     start_time = time.time()
     os.makedirs("./outputs", exist_ok=True)
     outflow_table.write(
-        "./outputs/outflows.hdf5",
+        "./outputs/outflows_lumpress3.hdf5",
         format="hdf5",
         path="outflow_properties",
         serialize_meta=True,
@@ -113,3 +129,4 @@ if __name__ == "__main__":
     )
     end_time = time.time()
     print(f"Saving took {end_time - start_time:.2f} s.")
+    print(len(outflow_table))

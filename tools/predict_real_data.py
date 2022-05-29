@@ -40,7 +40,7 @@ outflows_and_predictions_df.to_csv("./outputs/real_predictions.csv")
 utils.output_params.remove("bulge_mass")
 
 
-plt.rcParams.update({"font.size": 13})
+plt.rcParams.update({"font.size": 14})
 for idx, column_name in enumerate(utils.output_params):
     plt.subplot(2, int(np.ceil(len(utils.output_params) / 2)), idx + 1)
 
@@ -51,13 +51,13 @@ for idx, column_name in enumerate(utils.output_params):
         minval = 0
         maxval = 1
     elif column_name == "quasar_activity_duration":
-        plt.xlabel(f"Quasar activity duration [kyr]")
+        plt.xlabel(f"Activity duration [kyr]")
         plt.ylabel(f"N")
         ticks = [100000, 200000, 300000]
         minval = 0
         maxval = 3e5
     elif column_name == "outflow_solid_angle_fraction":
-        plt.xlabel(f"Outflow solid angle fraction")
+        plt.xlabel(f"Solid angle fraction")
         plt.ylabel(f"N")
         ticks = [0.2, 0.4, 0.6, 0.8, 1.0]
         minval = 0
@@ -85,6 +85,8 @@ for idx, column_name in enumerate(utils.output_params):
     plt.ylim(0, 20)
     plt.xticks(ticks)
     plt.yticks([0, 5, 10, 15, 20])
+
+    print(outflows_and_predictions_df["agn_type"].value_counts())
 
     ax = plt.gca()
 
