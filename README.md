@@ -73,4 +73,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
-The project is made available under the MIT license. See the [LICENSE](LICENSE.md) file for more information. If you use this software when preparing a publication, please cite Zubovas, Bialopetravičius & Kazlauskaitė (2022) [ADS link will appear here in due time].
+The project is made available under the MIT license. See the [LICENSE](LICENSE.md) file for more information. If you use this software when preparing a publication, please cite [Zubovas, Bialopetravičius & Kazlauskaitė (2022)](https://ui.adsabs.harvard.edu/abs/2022arXiv220701959Z).

@@ -1,5 +1,3 @@
-import numpy as np
-
 from .. import constants as const
 
 
@@ -11,24 +9,6 @@ def simple_time_step(radius, dot_radius, dotdot_radius, dotdotdot_radius, mass_p
     radius_new = radius + dot_radius_new * dt + 0.5 * dotdot_radius_new * dt ** 2. + (1. / 6.) * dotdotdot_radius_new * dt ** 3.
 
     return radius_new, dot_radius_new, dotdot_radius_new, dotdotdot_radius_new
-
-def luminosity_pressure_time_step(radius, dot_radius, mass_potential, mass_gas, dot_mass_gas, luminosity, dt):
-    #dotdot_radius_new = accel_calc(luminosity, mass_gas, dot_mass_gas, mass_potential, radius, kappa_IR, kappa_UV)
-    kappa_IR = 5
-    kappa_UV = 1000
-
-    G = 1.0
-    c = 2044.4885866463312 #2046.38472
-
-    tau_IR = kappa_IR * mass_gas / (4 * np.pi * radius**2)
-    tau_UV = kappa_UV * mass_gas / (4 * np.pi * radius**2)
-
-    dotdot_radius_new = luminosity / (c * mass_gas) * (1 + tau_IR - np.exp(- tau_UV)) - G * mass_potential / radius**2 - dot_mass_gas * dot_radius / mass_gas;
-    dot_radius_new = dot_radius + dotdot_radius_new * dt
-    dot_radius_new, dotdot_radius_new, _ = cap_velocities(dot_radius_new, dotdot_radius_new, 0)
-    radius_new = radius + dot_radius_new * dt + 0.5 * dotdot_radius_new * dt ** 2
-
-    return radius_new, dot_radius_new, dotdot_radius_new
 
 
 def leapfrog_dkd_time_step(radius, dot_radius, dotdot_radius, dotdotdot_radius, mass_potential, dot_mass_potential, mass_gas, dot_mass_gas, dotdot_mass_gas, luminosity, dt):

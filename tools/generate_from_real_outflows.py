@@ -47,7 +47,7 @@ initial_real_outflows = pd.read_csv("observed_outflows.csv")
 initial_real_outflows = initial_real_outflows[initial_real_outflows.type == "full"]
 initial_real_outflows.reset_index(drop=True, inplace=True)
 
-predicted_real_outflows = pd.read_csv("./outputs/real_predictions_lumpress2.csv")
+predicted_real_outflows = pd.read_csv("./outputs/real_predictions.csv")
 generated_model_params = generate_model_parameters(
     predicted_real_outflows, initial_real_outflows
 )
@@ -91,6 +91,6 @@ print()
 print(f"Saving simulations to disk...")
 start_time = time.time()
 os.makedirs("./outputs", exist_ok=True)
-outflow_dataframe.to_csv("./outputs/generated_outflows_from_real_predictions_lumpress2.csv")
+outflow_dataframe.to_csv("./outputs/generated_outflows_from_real_predictions.csv")
 end_time = time.time()
 print(f"Saving took {end_time - start_time:.2f} s.")

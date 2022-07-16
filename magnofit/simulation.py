@@ -38,13 +38,12 @@ def run_outflow_simulation(
     rng=np.random.default_rng(0),
 ):
     dtmax = init_params.quasar_activity_duration * 0.1
-    #print("dtmax:", dtmax)
     agn_episode_start_flag = 0
     courant_factor = 0.02
 
     curr_outflow = OutflowState(
-        radius=5.0 / 1000.0 / const.UNIT_KPC,
-        dot_radius=100000.0 / const.UNIT_VELOCITY, #1684594
+        radius=0.001 / const.UNIT_KPC,
+        dot_radius=100000.0 / const.UNIT_VELOCITY,
     )
     curr_galaxy = copy(init_params)
 
@@ -111,7 +110,6 @@ def run_outflow_simulation(
         dot_t2 = curr_outflow.dot_radius / (
             abs(curr_outflow.dotdot_radius) + np.finfo(float).eps
         )
-        '''
         # acceleration / jerk
         dot_t3 = curr_outflow.dotdot_radius / (
             abs(curr_outflow.dotdotdot_radius) + np.finfo(float).eps
@@ -119,8 +117,6 @@ def run_outflow_simulation(
 
         # Most conservative time step size
         dt = courant_factor * min(abs(dot_t1), abs(dot_t2), abs(dot_t3))
-        '''
-        dt = courant_factor * min(abs(dot_t1), abs(dot_t2))
 
         # We have to be careful at the start of each AGN episode in order to
         # propagate the derivatives of radius properly.
@@ -144,7 +140,7 @@ def run_outflow_simulation(
             )  # want an epsilon to make sure we are inside an AGN episode now
 
         dt = max(dt, dt_min)
-        dt = min(dt, 5.0 / const.UNIT_YEAR)
+        dt = min(dt, dtmax)
 
         curr_outflow.dot_time = dt
         next_outflow = OutflowState(time=curr_outflow.time + dt)
@@ -197,7 +193,6 @@ def run_outflow_simulation(
             )
 
         # Calculates next radius and its derivatives from various current parameters
-        '''
         (
             next_outflow.radius,
             next_outflow.dot_radius,
@@ -216,20 +211,6 @@ def run_outflow_simulation(
             mean_luminosity,
             dt,
         )
-        '''
-        (
-            next_outflow.radius,
-            next_outflow.dot_radius,
-            next_outflow.dotdot_radius,
-        ) = tc.luminosity_pressure_time_step(
-            curr_outflow.radius,
-            curr_outflow.dot_radius,
-            mass_potential,
-            mass_gas,
-            dot_mass_gas,
-            mean_luminosity,
-            dt,
-        )
 
         outflows.append(curr_outflow)
         galaxy_params.append(curr_galaxy)
@@ -238,10 +219,7 @@ def run_outflow_simulation(
             print(
                 f"At step = {timestep} time = {curr_outflow.time} calc failed due to negative radius."
             )
-            outflow_table = io.outflows_to_table(outflows, galaxy_params)
-            if max(outflow_table["radius"]) > 0.02:
-                return 3
-            return 1
+            return None
 
         curr_outflow = next_outflow
         next_outflow = OutflowState()
@@ -251,7 +229,7 @@ def run_outflow_simulation(
 
     outflow_table = io.outflows_to_table(outflows, galaxy_params)
     if max(outflow_table["radius"]) < 0.02:
-        return 2
+        return None
 
     largescale_outflows = outflow_table[outflow_table["radius"] > 0.02]
 

@@ -8,10 +8,7 @@ import matplotlib.pyplot as plt
 import tools.utils as utils
 
 
-outflow_properties = utils.load_simulated_outflows(path=f"./outputs/outflows.hdf5")
-
-X_test = utils.to_numpy(outflow_properties[utils.input_params])
-y_test = utils.to_numpy(outflow_properties[utils.output_params])
+outflow_properties = utils.load_simulated_outflows()
 
 X = utils.to_numpy(outflow_properties[utils.input_params])
 y = utils.to_numpy(outflow_properties[utils.output_params])
@@ -21,7 +18,7 @@ train_mask, test_mask = utils.split_sets_masks(outflow_properties)
 X_test, y_test = X[test_mask], y[test_mask]
 
 
-X_mean, X_stddev, y_mean, y_stddev = utils.load_normalization(path="./outputs/normalization_parameters.npz")
+X_mean, X_stddev, y_mean, y_stddev = utils.load_normalization()
 
 X_test = utils.normalize(X_test, X_mean, X_stddev)
 y_test = utils.normalize(y_test, y_mean, y_stddev)
@@ -35,10 +32,8 @@ prediction_table = utils.from_numpy(
     y_test_predictions_denorm, column_names=utils.output_params
 )
 
-#groundtruth_table = outflow_properties
-#prediction_table["id"] = outflow_properties["id"]
-
 groundtruth_table = outflow_properties[test_mask]
+
 prediction_table["id"] = outflow_properties[test_mask]["id"]
 
 utils.output_params.remove("bulge_mass")
