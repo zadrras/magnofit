@@ -68,9 +68,7 @@ poetry run ./tools/plot_all.sh
 ```
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+Pull requests are welcome. Please open an issue first to discuss what you would like to change.
 
 ## License
 The project is made available under the MIT license. See the [LICENSE](LICENSE.md) file for more information. If you use this software when preparing a publication, please cite [Zubovas, Bialopetravičius & Kazlauskaitė (2022)](https://ui.adsabs.harvard.edu/abs/2022arXiv220701959Z).
