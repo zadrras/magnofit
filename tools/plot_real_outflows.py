@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 14})
 def setup_plot(axes):
     for ax2d in axes:
         for ax in ax2d:
@@ -46,7 +46,7 @@ for name in initial_real_outflows.name:
 
     axs[0, 0].set_xlim(lummin, lummax)
     axs[0, 0].set_ylim(vmin, vmax)
-    axs[0, 0].set_ylabel('Outflow velocity (km s$^{-1}$)')
+    axs[0, 0].set_ylabel('Velocity (km s$^{-1}$)')
     axs[0, 0].plot(sorted_by_time_outflow.luminosity_AGN, sorted_by_time_outflow.dot_radius)
     axs[0, 0].plot([10**filtered_initial_real.lum_min_log, 10**filtered_initial_real.lum_max_log], [filtered_initial_real.dot_radius, filtered_initial_real.dot_radius], c='r')
     axs[0, 0].plot([10**filtered_initial_real.luminosity_AGN_log, 10**filtered_initial_real.luminosity_AGN_log], [filtered_initial_real.dot_radius*10**0.15, filtered_initial_real.dot_radius/10**0.15], c='y')
@@ -59,7 +59,7 @@ for name in initial_real_outflows.name:
     axs[0, 1].scatter(filtered_initial_real.radius, filtered_initial_real.dot_radius, c='r', zorder=1000)
 
     axs[1, 0].set_ylim(mmin, mmax)
-    axs[1, 0].set_ylabel('Mass outflow rate ($M_\odot$ yr$^{-1}$)')
+    axs[1, 0].set_ylabel('Mass flow rate ($M_\odot$ yr$^{-1}$)')
     axs[1, 0].set_xlabel('AGN luminosity (erg s$^{-1}$)')
     axs[1, 0].plot(sorted_by_time_outflow.luminosity_AGN, sorted_by_time_outflow.dot_mass)
     axs[1, 0].plot([10**filtered_initial_real.lum_min_log, 10**filtered_initial_real.lum_max_log], [filtered_initial_real.derived_dot_mass, filtered_initial_real.derived_dot_mass], c='r')

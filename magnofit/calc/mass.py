@@ -152,3 +152,24 @@ class MassJaffe(Mass):
         rho_outer = 1./3. / (bigger_radius ** 2.) / ((1. + bigger_radius) ** 2.)
 
         return mass_fraction, dot_mass_fraction, dotdot_mass_fraction, rho_contact, rho_outer
+
+class MassAlpha(Mass):
+    def __init__(self, alpha):
+        self.alpha = alpha
+
+    def calculate_fractions(self, scaled_radius, scaled_dot_radius, scaled_dotdot_radius, concentration):
+        mass_fraction = scaled_radius**(3-self.alpha)
+        dot_mass_fraction = (3-self.alpha) * scaled_radius**(2-self.alpha) * scaled_dot_radius
+        dotdot_mass_fraction = (3-self.alpha) * (2-self.alpha) * scaled_radius**(1-self.alpha) * scaled_dot_radius**2 + (3-self.alpha) * scaled_radius**(2-self.alpha) * scaled_dotdot_radius
+
+        rho_contact = 1./3.
+        rho_outer = 1./3. * (3./4.) ** 3
+
+        if mass_fraction > 1.:
+            mass_fraction = 1.
+            dot_mass_fraction = 0.
+            dotdot_mass_fraction = 0.
+            rho_contact = 1.e-10
+            rho_outer = 1.e-10
+
+        return mass_fraction, dot_mass_fraction, dotdot_mass_fraction, rho_contact, rho_outer

@@ -10,11 +10,6 @@ import tools.utils as utils
 
 
 real_outflows = utils.load_real_outflows()
-real_subset_bright = real_outflows["log_f_Edd"] > -1.65
-real_subset_medium = (real_outflows["log_f_Edd"] > -2.5) & (
-    real_outflows["log_f_Edd"] < -1.65
-)
-real_subset_dim = real_outflows["log_f_Edd"] < -2.5
 
 X_real = real_outflows[utils.input_params]
 
@@ -32,10 +27,9 @@ predictions_df = pd.DataFrame(
     index=real_outflows.index,
 )
 
-outflows_and_predictions_df = pd.merge(
+outflow_pred_df = pd.merge(
     real_outflows, predictions_df, left_index=True, right_index=True
 )
-outflows_and_predictions_df.to_csv("./outputs/real_predictions.csv")
 
 utils.output_params.remove("bulge_mass")
 
@@ -69,16 +63,19 @@ for idx, column_name in enumerate(utils.output_params):
         minval = 0
         maxval = 0.15
 
+    colors = [plt.cm.Set1(i) for i in range(4)]
     plt.hist(
         [
-            predictions_df[real_subset_bright][column_name],
-            predictions_df[real_subset_medium][column_name],
-            predictions_df[real_subset_dim][column_name],
+            outflow_pred_df[outflow_pred_df["agn_type"] == "Type 1"][column_name],
+            outflow_pred_df[outflow_pred_df["agn_type"] == "Type 2"][column_name],
+            outflow_pred_df[outflow_pred_df["agn_type"] == "LINER"][column_name],
+            outflow_pred_df[outflow_pred_df["agn_type"] == "HII"][column_name],
         ],
         bins=12,
         range=(minval, maxval),
         histtype="barstacked",
         stacked=True,
+        color=colors
     )
 
     plt.xlim(minval, maxval)
@@ -91,9 +88,10 @@ for idx, column_name in enumerate(utils.output_params):
     if column_name == "outflow_solid_angle_fraction":
         plt.legend(
             [
-                "log $f_{Edd}$ > -1.7",
-                "-1.7 > log $f_{Edd}$ > -2.5",
-                "log $f_{Edd}$ < -2.5",
+                "Type 1",
+                "Type 2",
+                "LINER",
+                "HII",
             ]
         )
     elif column_name == "quasar_activity_duration":
@@ -119,4 +117,4 @@ fig = plt.gcf()
 fig.set_size_inches(9.0, 8.0)
 plt.subplots_adjust(wspace=0.4, hspace=0.25)
 
-plt.savefig(f"./figures/real_predictions.png", dpi=300)
+plt.savefig(f"./figures/real_predictions_by_type.png", dpi=300)
