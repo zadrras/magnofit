@@ -227,16 +227,20 @@ def run_outflow_simulation(
         curr_galaxy = next_galaxy
         next_galaxy = copy(curr_galaxy)
 
-    outflow_table = io.outflows_to_table(outflows, galaxy_params)
-    if max(outflow_table["radius"]) < 0.02:
+    # Reject outflows with radius <= 0.02
+    galaxy_params = [g for (o, g) in zip(outflows, galaxy_params) if o.radius > 0.02]
+    outflows = [o for o in outflows if o.radius > 0.02]
+
+    # Randomly select predefined number of outflows
+    # The pairing between outflows and galaxies must be retained, hence the syntax
+    if rng and len(outflows) > 0:
+        weights = [o.dot_time for o in outflows]
+        weights /= np.sum(weights)
+        size = min(len(outflows), output_array_length)
+        outflows, galaxy_params = zip(
+            *rng.choice(list(zip(outflows, galaxy_params)), p=weights, size=size)
+        )
+    else:
         return None
 
-    largescale_outflows = outflow_table[outflow_table["radius"] > 0.02]
-
-    if rng and len(largescale_outflows) > output_array_length > 0:
-        indices_to_return = rng.integers(
-            low=0, high=len(largescale_outflows), size=output_array_length
-        )
-        largescale_outflows = largescale_outflows[indices_to_return]
-
-    return largescale_outflows
+    return io.outflows_to_table(outflows, galaxy_params)
