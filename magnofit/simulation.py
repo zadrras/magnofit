@@ -230,6 +230,8 @@ def run_outflow_simulation(
     # Reject outflows with radius <= 0.02
     galaxy_params = [g for (o, g) in zip(outflows, galaxy_params) if o.radius > 0.02]
     outflows = [o for o in outflows if o.radius > 0.02]
+    if len(outflows) == 0:
+        return None
 
     # Randomly select predefined number of outflows
     # The pairing between outflows and galaxies must be retained, hence the syntax
@@ -240,7 +242,5 @@ def run_outflow_simulation(
         outflows, galaxy_params = zip(
             *rng.choice(list(zip(outflows, galaxy_params)), p=weights, size=size)
         )
-    else:
-        return None
 
     return io.outflows_to_table(outflows, galaxy_params)
