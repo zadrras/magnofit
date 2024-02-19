@@ -7,7 +7,14 @@ Magnofit is a library for running 1D outflow simulations of active galactic nucl
   <img src="figures/real_predictions.png" alt="Simulated outflow parameters" style="height:440px"/>
 </p>
 
-## Dependencies
+## Installation
+
+Create and activate virtual Python environment.
+
+```bash
+python -m venv magnofit
+source magnotif/bin/activate
+```
 
 [Poetry](https://python-poetry.org/) is used to install dependencies and manage the project's virtual environment.
 
