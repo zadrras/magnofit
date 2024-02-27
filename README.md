@@ -7,19 +7,37 @@ Magnofit is a library for running 1D outflow simulations of active galactic nucl
   <img src="figures/real_predictions.png" alt="Simulated outflow parameters" style="height:440px"/>
 </p>
 
-## Installation
+[Poetry](https://python-poetry.org/) is used to install dependencies and manage the project's virtual environment. Magnofit also uses Python 3.11 which you'll need to install if your system comes with a different version. The preferred way to do this is via [pyenv](https://github.com/pyenv/pyenv).
 
-Create and activate virtual Python environment.
+## Quick setup guide
+
+1. Install [Poetry](https://python-poetry.org/) and [pyenv](https://github.com/pyenv/pyenv).
+
+2. Clone the repository and enter it's directory:
 
 ```bash
-python -m venv magnofit
-source magnotif/bin/activate
+git clone git@github.com:zadrras/magnofit.git
+cd magnofit
 ```
 
-[Poetry](https://python-poetry.org/) is used to install dependencies and manage the project's virtual environment.
+3. Install and activate Python 3.11 for the project:
+
+```bash
+pyenv install 3.11.8
+pyenv local 3.11.8
+```
+
+4. Create virtual environment and install dependencies:
 
 ```bash
 poetry install
+```
+
+The virtual environment will be located inside the project directory and named `.venv`. You can use this through Poetry or by activating it manually.
+
+5. Run tests to make sure the project is functioning as intended:
+
+```bash
 poetry run pytest
 ```
 
@@ -40,13 +58,17 @@ print(outflow_properties)
 
 ## Replicating the paper
 
+Do note that to replicate the paper exactly you will need to checkout the commit tagged as [`paper`](https://github.com/zadrras/magnofit/releases/tag/paper). Newer versions of the code might produce slightly different outflows and figures.
+
+### Steps
+
 Generate outflow table with a varied range of parameters:
 
 ```bash
 poetry run python tools/generate.py
 ```
 
-This takes around 2.25 hours on 16 cores of an AMD Ryzen 7 3800X CPU.
+This takes around 1 hour and 40 minutes on 16 cores of an AMD Ryzen 7 3800X CPU.
 
 Train a neural network to predict the duty cycle, quasar activity duration, bulge mass, solid angle fraction and bulge gas fraction of the outflow:
 
@@ -54,7 +76,7 @@ Train a neural network to predict the duty cycle, quasar activity duration, bulg
 poetry run python tools/train.py
 ```
 
-This takes under 12 minutes on an AMD Ryzen 7 3800X processor.
+This takes under 14 minutes on an AMD Ryzen 7 3800X processor.
 
 Predict the parameters of real AGN outflows (found in [observed_outflows.csv](observed_outflows.csv)):
 

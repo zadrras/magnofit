@@ -8,8 +8,8 @@ import magnofit.constants as const
 @pytest.mark.parametrize(
     "rng, expected_bulge_mass",
     [
-        (np.random.RandomState(0), 2714531156),
-        (np.random.RandomState(42), 2840831965),
+        (np.random.default_rng(0), 3240299308),
+        (np.random.default_rng(42), 3202246515),
     ],
 )
 def test_bulge_mass(rng, expected_bulge_mass):
@@ -22,8 +22,8 @@ def test_bulge_mass(rng, expected_bulge_mass):
 @pytest.mark.parametrize(
     "rng, expected_smbh_mass",
     [
-        (np.random.RandomState(0), 4667139),
-        (np.random.RandomState(42), 3385572),
+        (np.random.default_rng(0), 5489962),
+        (np.random.default_rng(42), 7065856),
     ],
 )
 def test_smbh_mass(rng, expected_smbh_mass):
@@ -35,8 +35,8 @@ def test_smbh_mass(rng, expected_smbh_mass):
 @pytest.mark.parametrize(
     "rng, expected_bulge_sigma",
     [
-        (np.random.RandomState(0), 10523399),
-        (np.random.RandomState(42), 10347858),
+        (np.random.default_rng(0), 12096686),
+        (np.random.default_rng(42), 9815714),
     ],
 )
 def test_bulge_sigma(rng, expected_bulge_sigma):

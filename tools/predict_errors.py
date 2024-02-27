@@ -39,7 +39,7 @@ X_mean, X_stddev, y_mean, y_stddev = utils.load_normalization()
 
 X_sample_embiggened = utils.normalize(X_sample_embiggened, X_mean, X_stddev)
 
-model = tf.keras.models.load_model("./outputs/model.h5")
+model = tf.keras.models.load_model("./outputs/model.keras")
 
 y_sample_predictions = model.predict(X_sample_embiggened)
 y_sample_predictions = utils.denormalize(y_sample_predictions, y_mean, y_stddev)
@@ -129,7 +129,7 @@ for idx, column_name in enumerate(utils.output_params):
         align="edge",
         color="lightsteelblue",
         edgecolor="royalblue",
-        linewidth="2",
+        linewidth=2,
     )
 
     plt.xlim([min_x, max_x])

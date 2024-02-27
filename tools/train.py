@@ -39,7 +39,7 @@ y_train = utils.normalize(y_train, y_mean, y_stddev)
 X_test = utils.normalize(X_test, X_mean, X_stddev)
 y_test = utils.normalize(y_test, y_mean, y_stddev)
 
-layers = [tf.keras.layers.Input(len(utils.input_params))]
+layers = [tf.keras.layers.Input((len(utils.input_params),))]
 
 for l in range(args.layers):
     layers.append(tf.keras.layers.Dense(args.neurons, activation=args.activation))
@@ -97,4 +97,4 @@ for m, name in zip(individual_mses, utils.output_params):
 
 print()
 print()
-model.save("./outputs/model.h5")
+model.save("./outputs/model.keras")
