@@ -23,7 +23,7 @@ X_mean, X_stddev, y_mean, y_stddev = utils.load_normalization()
 X_test = utils.normalize(X_test, X_mean, X_stddev)
 y_test = utils.normalize(y_test, y_mean, y_stddev)
 
-model = tf.keras.models.load_model("./outputs/model.h5")
+model = tf.keras.models.load_model("./outputs/model.keras")
 
 y_test_predictions = model.predict(X_test, verbose=1)
 
@@ -38,7 +38,7 @@ prediction_table["id"] = outflow_properties[test_mask]["id"]
 
 utils.output_params.remove("bulge_mass")
 
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({"font.size": 14})
 for idx, column_name in enumerate(utils.output_params):
     plt.subplot(2, int(np.ceil(len(utils.output_params) / 2)), idx + 1)
     bins = 12
@@ -66,7 +66,9 @@ for idx, column_name in enumerate(utils.output_params):
     clipped_predictions[clipped_predictions < min_val] = min_val
     clipped_predictions[clipped_predictions > max_val] = max_val
     histogram, *_ = np.histogram2d(
-        groundtruth_table[column_name], clipped_predictions, bins=bins, normed=False
+        groundtruth_table[column_name],
+        clipped_predictions,
+        bins=bins,
     )
 
     histogram = histogram.T[::-1]

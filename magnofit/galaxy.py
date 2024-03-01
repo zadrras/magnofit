@@ -152,7 +152,7 @@ class Galaxy:
         # We randomize the value of the first free coefficient to provide
         # a realistic spread of bulge masses. Note that the bounds here
         # were derived by visually inspecting the results.
-        intercept_alpha = 8.46 + rng.uniform(0.34, -0.34)
+        intercept_alpha = 8.46 + rng.uniform(-0.34, 0.34)
         slope_beta = 1.05
         log_bulge_mass = (np.log10(self.smbh_mass * const.UNIT_MSUN) - intercept_alpha) / slope_beta
         return ((10 ** log_bulge_mass) * 1e11) / const.UNIT_MSUN
@@ -163,7 +163,7 @@ class Galaxy:
         # We randomize the value of the first free coefficient to provide
         # a realistic spread of bulge masses. Note that the bounds here
         # were derived by visually inspecting the results.
-        intercept_alpha = 8.32 + rng.uniform(0.38, -0.38)
+        intercept_alpha = 8.32 + rng.uniform(-0.38, 0.38)
         slope_beta = 5.64
         log_sigma = (np.log10(self.smbh_mass * const.UNIT_MSUN) - intercept_alpha) / slope_beta
         return ((10 ** log_sigma) * 2e7) / const.UNIT_VELOCITY

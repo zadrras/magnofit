@@ -16,7 +16,7 @@ X_real = real_outflows[utils.input_params]
 X_mean, X_stddev, y_mean, y_stddev = utils.load_normalization()
 X_real = utils.normalize(X_real, X_mean, X_stddev)
 
-model = tf.keras.models.load_model("./outputs/model.h5")
+model = tf.keras.models.load_model("./outputs/model.keras")
 y_real_predictions = model.predict(X_real)
 
 y_real_predictions = utils.denormalize(y_real_predictions, y_mean, y_stddev)
