@@ -27,6 +27,8 @@ pyenv install 3.11.8
 pyenv local 3.11.8
 ```
 
+Sometimes poetry doesn't pick up the python version set by pyenv. You can run `poetry env info` to check and if the version doesn't match set it with `poetry env use 3.11.8`.
+
 4. Create virtual environment and install dependencies:
 
 ```bash
