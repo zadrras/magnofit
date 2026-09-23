@@ -4,9 +4,9 @@ from .. import constants as const
 def simple_time_step(radius, dot_radius, dotdot_radius, dotdotdot_radius, mass_potential, dot_mass_potential, mass_gas, dot_mass_gas, dotdot_mass_gas, luminosity, dt):
     dotdotdot_radius_new = rtdot_calc(luminosity, mass_gas, dot_mass_gas, dotdot_mass_gas, mass_potential, dot_mass_potential, radius, dot_radius, dotdot_radius)
     dotdot_radius_new = dotdot_radius + dotdotdot_radius_new * dt
-    dot_radius_new = dot_radius + dotdot_radius_new * dt + 0.5 * dotdotdot_radius_new * (dt ** 2.)
+    dot_radius_new = dot_radius + dotdot_radius * dt + 0.5 * dotdotdot_radius_new * (dt ** 2.)
     dot_radius_new, dotdot_radius_new, dotdotdot_radius_new = cap_velocities(dot_radius_new, dotdot_radius_new, dotdotdot_radius_new)
-    radius_new = radius + dot_radius_new * dt + 0.5 * dotdot_radius_new * dt ** 2. + (1. / 6.) * dotdotdot_radius_new * dt ** 3.
+    radius_new = radius + dot_radius * dt + 0.5 * dotdot_radius * dt ** 2. + (1. / 6.) * dotdotdot_radius_new * dt ** 3.
 
     return radius_new, dot_radius_new, dotdot_radius_new, dotdotdot_radius_new
 
