@@ -10,7 +10,8 @@ import tools.utils as utils
 
 
 tf.get_logger().setLevel("ERROR")
-tf.random.set_seed(0)
+tf.keras.utils.set_random_seed(0)
+tf.config.experimental.enable_op_determinism()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--start-lr", type=float, default=0.001)
