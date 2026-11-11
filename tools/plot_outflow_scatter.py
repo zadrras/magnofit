@@ -6,7 +6,7 @@ import random
 outflow_data = astropy.table.Table.read("./outputs/outflows.hdf5")
 
 agn_shining = outflow_data[outflow_data["luminosity_AGN"] > 0]
-subsample = random.sample(range(len(agn_shining)), k=10000)
+subsample = random.Random(0).sample(range(len(agn_shining)), k=10000)
 shining = agn_shining[subsample]
 
 radius = shining["radius"]
